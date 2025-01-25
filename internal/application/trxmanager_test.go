@@ -11,7 +11,7 @@ import (
 
 func TestBaseTrxManager_Run_Success(t *testing.T) {
 	mockTrx := mocks.NewTrxManager(t)
-	trxManager := application.NewBaseTrxManager(mockTrx)
+	trxManager := application.TrxManagerBase{TrxManager: mockTrx}
 
 	mockTrx.On("Commit").Return(nil).Once()
 	mockTrx.On("Shutdown").Return(nil).Once()
@@ -25,7 +25,7 @@ func TestBaseTrxManager_Run_Success(t *testing.T) {
 
 func TestBaseTrxManager_Run_Failure(t *testing.T) {
 	mockTrx := mocks.NewTrxManager(t)
-	trxManager := application.NewBaseTrxManager(mockTrx)
+	trxManager := application.TrxManagerBase{TrxManager: mockTrx}
 
 	mockTrx.On("Rollback").Return(nil).Once()
 	mockTrx.On("Shutdown").Return(nil).Once()
@@ -39,7 +39,7 @@ func TestBaseTrxManager_Run_Failure(t *testing.T) {
 
 func TestBaseTrxManager_Run_CommitError(t *testing.T) {
 	mockTrx := mocks.NewTrxManager(t)
-	trxManager := application.NewBaseTrxManager(mockTrx)
+	trxManager := application.TrxManagerBase{TrxManager: mockTrx}
 
 	mockTrx.On("Commit").Return(errors.New("commit failed")).Once()
 	mockTrx.On("Shutdown").Return(nil).Once()
@@ -54,7 +54,7 @@ func TestBaseTrxManager_Run_CommitError(t *testing.T) {
 
 func TestBaseTrxManager_Run_RollbackError(t *testing.T) {
 	mockTrx := mocks.NewTrxManager(t)
-	trxManager := application.NewBaseTrxManager(mockTrx)
+	trxManager := application.TrxManagerBase{TrxManager: mockTrx}
 
 	mockTrx.On("Rollback").Return(errors.New("rollback failed")).Once()
 	mockTrx.On("Shutdown").Return(nil).Once()
@@ -69,7 +69,7 @@ func TestBaseTrxManager_Run_RollbackError(t *testing.T) {
 
 func TestBaseTrxManager_Run_ShutdownError(t *testing.T) {
 	mockTrx := mocks.NewTrxManager(t)
-	trxManager := application.NewBaseTrxManager(mockTrx)
+	trxManager := application.TrxManagerBase{TrxManager: mockTrx}
 
 	mockTrx.On("Commit").Return(nil).Once()
 	mockTrx.On("Shutdown").Return(errors.New("shutdown error")).Once()

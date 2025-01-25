@@ -14,14 +14,14 @@ import (
 
 func TestNewInMemoryCartsRepository(t *testing.T) {
 	storage := make(map[uuid.UUID]cart.Cart)
-	repo := repositories.NewInMemoryCartsRepository(&storage)
+	repo := repositories.NewInMemoryCartsRepository(storage)
 
 	assert.NotNil(t, repo, "Repository should not be nil")
 }
 
 func TestInMemoryCartsRepository_Create_Success(t *testing.T) {
 	storage := make(map[uuid.UUID]cart.Cart)
-	repo := repositories.NewInMemoryCartsRepository(&storage)
+	repo := repositories.NewInMemoryCartsRepository(storage)
 
 	// Create a cart
 	cartID := uuid.New()
@@ -37,7 +37,7 @@ func TestInMemoryCartsRepository_Create_Success(t *testing.T) {
 
 func TestInMemoryCartsRepository_Retrieve_Success(t *testing.T) {
 	storage := make(map[uuid.UUID]cart.Cart)
-	repo := repositories.NewInMemoryCartsRepository(&storage)
+	repo := repositories.NewInMemoryCartsRepository(storage)
 
 	// Create a cart and store it
 	cartID := uuid.New()
@@ -53,7 +53,7 @@ func TestInMemoryCartsRepository_Retrieve_Success(t *testing.T) {
 
 func TestInMemoryCartsRepository_Retrieve_CartNotFound(t *testing.T) {
 	storage := make(map[uuid.UUID]cart.Cart)
-	repo := repositories.NewInMemoryCartsRepository(&storage)
+	repo := repositories.NewInMemoryCartsRepository(storage)
 
 	// Attempt to retrieve a non-existing cart
 	_, err := repo.Retrieve(uuid.New())
@@ -67,7 +67,7 @@ func TestInMemoryCartsRepository_Retrieve_CartNotFound(t *testing.T) {
 
 func TestInMemoryCartsRepository_Update_Success(t *testing.T) {
 	storage := make(map[uuid.UUID]cart.Cart)
-	repo := repositories.NewInMemoryCartsRepository(&storage)
+	repo := repositories.NewInMemoryCartsRepository(storage)
 
 	// Create and store a cart
 	cartID := uuid.New()
@@ -85,7 +85,7 @@ func TestInMemoryCartsRepository_Update_Success(t *testing.T) {
 
 func TestInMemoryCartsRepository_Update_CartNotFound(t *testing.T) {
 	storage := make(map[uuid.UUID]cart.Cart)
-	repo := repositories.NewInMemoryCartsRepository(&storage)
+	repo := repositories.NewInMemoryCartsRepository(storage)
 
 	// Attempt to update a non-existing cart
 	_, err := repo.Update(cart.Cart{Id: uuid.New()})
@@ -99,7 +99,7 @@ func TestInMemoryCartsRepository_Update_CartNotFound(t *testing.T) {
 
 func TestInMemoryCartsRepository_Clear_Success(t *testing.T) {
 	storage := make(map[uuid.UUID]cart.Cart)
-	repo := repositories.NewInMemoryCartsRepository(&storage)
+	repo := repositories.NewInMemoryCartsRepository(storage)
 
 	// Create a cart with items
 	cartID := uuid.New()
@@ -118,7 +118,7 @@ func TestInMemoryCartsRepository_Clear_Success(t *testing.T) {
 
 func TestInMemoryCartsRepository_Clear_CartNotFound(t *testing.T) {
 	storage := make(map[uuid.UUID]cart.Cart)
-	repo := repositories.NewInMemoryCartsRepository(&storage)
+	repo := repositories.NewInMemoryCartsRepository(storage)
 
 	// Attempt to clear a non-existing cart
 	err := repo.Clear(cart.Cart{Id: uuid.New()})

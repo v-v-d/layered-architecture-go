@@ -8,11 +8,15 @@ import (
 )
 
 type InMemoryTrxManager struct {
-	storage *map[uuid.UUID]cart.Cart
+	application.TrxManagerBase
+	storage map[uuid.UUID]cart.Cart
 }
 
-func NewInMemoryTrxManager(storage *map[uuid.UUID]cart.Cart) *InMemoryTrxManager {
-	return &InMemoryTrxManager{storage: storage}
+func NewInMemoryTrxManager(storage map[uuid.UUID]cart.Cart) *InMemoryTrxManager {
+	manager := &InMemoryTrxManager{storage: storage}
+	manager.TrxManagerBase.TrxManager = manager
+
+	return manager
 }
 
 func (t *InMemoryTrxManager) Commit() error {

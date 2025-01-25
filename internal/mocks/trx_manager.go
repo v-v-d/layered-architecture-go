@@ -89,6 +89,24 @@ func (_m *TrxManager) Rollback() error {
 	return r0
 }
 
+// Run provides a mock function with given fields: action
+func (_m *TrxManager) Run(action func() error) error {
+	ret := _m.Called(action)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Run")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(func() error) error); ok {
+		r0 = rf(action)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Shutdown provides a mock function with no fields
 func (_m *TrxManager) Shutdown() error {
 	ret := _m.Called()

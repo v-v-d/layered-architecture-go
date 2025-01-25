@@ -21,6 +21,7 @@ type ItemsRepository interface {
 }
 
 type TrxManager interface {
+	Run(action func() error) error
 	Commit() error
 	Rollback() error
 	Shutdown() error
@@ -28,31 +29,27 @@ type TrxManager interface {
 	Items() ItemsRepository
 }
 
-type BaseTrxManager struct {
-	trxManager TrxManager
+type TrxManagerBase struct {
+	TrxManager
 }
 
-func NewBaseTrxManager(trxManager TrxManager) BaseTrxManager {
-	return BaseTrxManager{trxManager: trxManager}
-}
-
-func (t *BaseTrxManager) Run(action func() error) error {
-	defer func(trxManager TrxManager) {
-		if err := trxManager.Shutdown(); err != nil {
+func (t *TrxManagerBase) Run(action func() error) error {
+	defer func() {
+		if err := t.Shutdown(); err != nil {
 			fmt.Printf("Failed to return connection back to pool! Shutdown error: %s", err.Error())
 		}
-	}(t.trxManager)
+	}()
 
 	err := action()
 
 	if err != nil {
-		if rollbackErr := t.trxManager.Rollback(); rollbackErr != nil {
+		if rollbackErr := t.Rollback(); rollbackErr != nil {
 			return &TrxManagerError{Operation: "Rollback", ErrMsg: rollbackErr.Error()}
 		}
 		return err
 	}
 
-	if commitErr := t.trxManager.Commit(); commitErr != nil {
+	if commitErr := t.Commit(); commitErr != nil {
 		return &TrxManagerError{Operation: "Commit", ErrMsg: commitErr.Error()}
 	}
 
