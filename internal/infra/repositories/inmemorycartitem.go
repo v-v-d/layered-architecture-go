@@ -8,28 +8,30 @@ import (
 )
 
 type InMemoryItemsRepository struct {
-	storage map[uuid.UUID]cart.Cart
+	storage *map[uuid.UUID]cart.Cart
 }
 
-func NewInMemoryItemsRepository(storage map[uuid.UUID]cart.Cart) *InMemoryItemsRepository {
+func NewInMemoryItemsRepository(storage *map[uuid.UUID]cart.Cart) *InMemoryItemsRepository {
 	return &InMemoryItemsRepository{storage: storage}
 }
 
 func (r *InMemoryItemsRepository) Add(item cartitem.CartItem) error {
-	aCart, exists := r.storage[item.CartId]
+	storage := *r.storage
+	aCart, exists := storage[item.CartId]
 
 	if !exists {
 		return &application.CartNotFoundError{CartId: item.CartId}
 	}
 
 	aCart.Items = append(aCart.Items, item)
-	r.storage[item.CartId] = aCart
+	storage[item.CartId] = aCart
 
 	return nil
 }
 
 func (r *InMemoryItemsRepository) Update(item cartitem.CartItem) (cartitem.CartItem, error) {
-	aCart, exists := r.storage[item.CartId]
+	storage := *r.storage
+	aCart, exists := storage[item.CartId]
 
 	if !exists {
 		return item, &application.CartNotFoundError{CartId: item.CartId}
@@ -41,7 +43,7 @@ func (r *InMemoryItemsRepository) Update(item cartitem.CartItem) (cartitem.CartI
 		}
 
 		aCart.Items[i] = item
-		r.storage[item.CartId] = aCart
+		storage[item.CartId] = aCart
 
 		return item, nil
 	}
@@ -50,7 +52,8 @@ func (r *InMemoryItemsRepository) Update(item cartitem.CartItem) (cartitem.CartI
 }
 
 func (r *InMemoryItemsRepository) Delete(item cartitem.CartItem) error {
-	aCart, exists := r.storage[item.CartId]
+	storage := *r.storage
+	aCart, exists := storage[item.CartId]
 
 	if !exists {
 		return &application.CartNotFoundError{CartId: item.CartId}
@@ -63,7 +66,7 @@ func (r *InMemoryItemsRepository) Delete(item cartitem.CartItem) error {
 
 		aCart.Items[i] = aCart.Items[len(aCart.Items)-1]
 		aCart.Items = aCart.Items[:len(aCart.Items)-1]
-		r.storage[item.CartId] = aCart
+		storage[item.CartId] = aCart
 
 		return nil
 	}

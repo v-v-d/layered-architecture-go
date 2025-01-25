@@ -8,11 +8,11 @@ import (
 )
 
 type InMemoryTrxManager struct {
-	storage map[uuid.UUID]cart.Cart
+	storage *map[uuid.UUID]cart.Cart
 }
 
-func NewInMemoryTrxManager(storage map[uuid.UUID]cart.Cart) InMemoryTrxManager {
-	return InMemoryTrxManager{storage: storage}
+func NewInMemoryTrxManager(storage *map[uuid.UUID]cart.Cart) *InMemoryTrxManager {
+	return &InMemoryTrxManager{storage: storage}
 }
 
 func (t *InMemoryTrxManager) Commit() error {
