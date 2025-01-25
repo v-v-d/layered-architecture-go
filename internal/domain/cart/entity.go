@@ -32,14 +32,14 @@ type Cart struct {
 	Items     []cartitem.CartItem
 }
 
-func NewCart(aCustomer customer.Customer) (Cart, error) {
+func NewCart(aCustomer customer.Customer) Cart {
 	return Cart{
 		CreatedAt: time.Now(),
 		Id:        uuid.New(),
 		Customer:  aCustomer,
 		Status:    StatusOpened,
 		Items:     []cartitem.CartItem{},
-	}, nil
+	}
 }
 
 func (c *Cart) ItemsQty() int32 {

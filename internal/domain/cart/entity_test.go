@@ -29,7 +29,7 @@ func generateCustomer() customer.Customer {
 }
 
 func generateWeightCartItem(quantity domain.Quantity, price domain.Price) cartitem.CartItem {
-	item, _ := cartitem.NewCartItem(
+	item := cartitem.NewCartItem(
 		gofakeit.Int32(),
 		gofakeit.ProductName(),
 		price,
@@ -42,7 +42,7 @@ func generateWeightCartItem(quantity domain.Quantity, price domain.Price) cartit
 }
 
 func generatePieceCartItem(quantity domain.Quantity, price domain.Price) cartitem.CartItem {
-	item, _ := cartitem.NewCartItem(
+	item := cartitem.NewCartItem(
 		gofakeit.Int32(),
 		gofakeit.ProductName(),
 		price,
@@ -74,7 +74,7 @@ func generateCart(
 		items[i] = cartItemFactory(itemQuantity, itemPrice)
 	}
 
-	cart, _ := NewCart(aCustomer)
+	cart := NewCart(aCustomer)
 	cart.Items = items
 
 	return cart
@@ -82,7 +82,7 @@ func generateCart(
 
 func generateEmptyCart() Cart {
 	aCustomer := generateCustomer()
-	cart, _ := NewCart(aCustomer)
+	cart := NewCart(aCustomer)
 
 	return cart
 }
@@ -154,7 +154,7 @@ func TestCheckoutEnabled_MoreThanMinCost(t *testing.T) {
 func TestAddNewItem_Ok(t *testing.T) {
 	item := generateCartItem()
 	aCustomer := generateCustomer()
-	cart, _ := NewCart(aCustomer)
+	cart := NewCart(aCustomer)
 
 	err := cart.AddNewItem(aCustomer, item)
 
@@ -166,7 +166,7 @@ func TestAddNewItem_Ok(t *testing.T) {
 func TestAddNewItem_OwnershipError(t *testing.T) {
 	item := generateCartItem()
 	aCustomer := generateCustomer()
-	cart, _ := NewCart(aCustomer)
+	cart := NewCart(aCustomer)
 	anotherCustomer := customer.NewCustomer(int32(gofakeit.Number(-99, -1)))
 
 	err := cart.AddNewItem(anotherCustomer, item)
@@ -183,7 +183,7 @@ func TestAddNewItem_OwnershipError(t *testing.T) {
 func TestAddNewItem_ForbiddenError(t *testing.T) {
 	item := generateCartItem()
 	aCustomer := generateCustomer()
-	cart, _ := NewCart(aCustomer)
+	cart := NewCart(aCustomer)
 
 	_ = cart.Deactivate()
 
@@ -201,7 +201,7 @@ func TestAddNewItem_ForbiddenError(t *testing.T) {
 func TestAddNewItem_ItemAlreadyExistsError(t *testing.T) {
 	item := generateCartItem()
 	aCustomer := generateCustomer()
-	cart, _ := NewCart(aCustomer)
+	cart := NewCart(aCustomer)
 
 	_ = cart.AddNewItem(aCustomer, item)
 	err := cart.AddNewItem(aCustomer, item)
@@ -403,7 +403,7 @@ func TestUnlock_Failed(t *testing.T) {
 
 func TestString(t *testing.T) {
 	aCustomer := generateCustomer()
-	cart, _ := NewCart(aCustomer)
+	cart := NewCart(aCustomer)
 
 	expected := fmt.Sprintf(
 		"Cart{CreatedAt: %s, Id: %s, CustomerId: %d, Status: %s}",

@@ -22,7 +22,7 @@ func NewCartItem(
 	quantity domain.Quantity,
 	isWeight bool,
 	cartId uuid.UUID,
-) (CartItem, error) {
+) CartItem {
 	return CartItem{
 		Id:       id,
 		Name:     name,
@@ -30,7 +30,7 @@ func NewCartItem(
 		Quantity: quantity,
 		IsWeight: isWeight,
 		CartId:   cartId,
-	}, nil
+	}
 }
 
 func (c CartItem) Cost() int32 {

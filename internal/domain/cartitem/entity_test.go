@@ -40,7 +40,7 @@ func generateFakeWeightCartItem() (CartItem, error) {
 		quantity,
 		true, // IsWeight = true
 		uuid.New(),
-	)
+	), nil
 }
 
 func generateFakePieceCartItem() (CartItem, error) {
@@ -61,7 +61,7 @@ func generateFakePieceCartItem() (CartItem, error) {
 		quantity,
 		false, // IsWeight = false
 		uuid.New(),
-	)
+	), nil
 }
 
 func TestNewCartItem(t *testing.T) {
@@ -91,7 +91,7 @@ func TestCartItem_String(t *testing.T) {
 	quantity, _ := domain.NewQuantity(3)
 	cartId := uuid.New()
 
-	item, _ := NewCartItem(1, "Test Product", price, quantity, false, cartId)
+	item := NewCartItem(1, "Test Product", price, quantity, false, cartId)
 
 	expected := fmt.Sprintf(
 		"CartItem{ID: %d, Name: %s, Price: %s, Quantity: %s, IsWeight: %t}",
