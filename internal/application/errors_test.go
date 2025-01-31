@@ -49,3 +49,17 @@ func TestCartItemNotFoundError(t *testing.T) {
 	assert.True(t, errors.As(err, &notFoundErr), "Error should be of type CartItemNotFoundError")
 	assert.Equal(t, itemId, notFoundErr.ItemId)
 }
+
+func TestCustomerNotFoundError(t *testing.T) {
+	AuthData := "test"
+	err := &CustomerNotFoundError{AuthData: AuthData}
+
+	assert.NotNil(t, err)
+
+	expectedMsg := fmt.Sprintf("Customer %s doesn't exist.", err.AuthData)
+	assert.Equal(t, expectedMsg, err.Error(), "Error message is incorrect")
+
+	var notFoundErr *CustomerNotFoundError
+	assert.True(t, errors.As(err, &notFoundErr), "Error should be of type CustomerNotFoundError")
+	assert.Equal(t, AuthData, notFoundErr.AuthData)
+}
