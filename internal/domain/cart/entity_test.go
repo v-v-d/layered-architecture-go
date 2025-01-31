@@ -406,11 +406,12 @@ func TestString(t *testing.T) {
 	cart := NewCart(aCustomer)
 
 	expected := fmt.Sprintf(
-		"Cart{CreatedAt: %s, Id: %s, CustomerId: %d, Status: %s}",
+		"Cart{CreatedAt: %s, Id: %s, CustomerId: %d, Status: %s, Items: %s}",
 		cart.CreatedAt,
 		cart.Id,
 		cart.Customer.Id,
 		cart.Status,
+		cart.Items,
 	)
 	assert.Equal(t, cart.String(), expected)
 }

@@ -5,6 +5,11 @@ import (
 	"layered-arch/internal/domain/cart"
 )
 
+// ICreateCartUseCase is used for testing purposes.
+type ICreateCartUseCase interface {
+	Execute(authData string) (cart.Cart, error)
+}
+
 type CreateCartUseCase struct {
 	trxManager application.TrxManager
 	authSystem application.AuthSystem
@@ -13,7 +18,7 @@ type CreateCartUseCase struct {
 func NewCreateCartUseCase(
 	trxManager application.TrxManager,
 	authSystem application.AuthSystem,
-) *CreateCartUseCase {
+) ICreateCartUseCase {
 	return &CreateCartUseCase{trxManager: trxManager, authSystem: authSystem}
 }
 

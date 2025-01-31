@@ -29,3 +29,11 @@ type CartItemNotFoundError struct {
 func (e *CartItemNotFoundError) Error() string {
 	return fmt.Sprintf("Cart item %d doesn't exist.", e.ItemId)
 }
+
+type CustomerNotFoundError struct {
+	AuthData string
+}
+
+func (e *CustomerNotFoundError) Error() string {
+	return fmt.Sprintf("Customer %s doesn't exist.", e.AuthData)
+}

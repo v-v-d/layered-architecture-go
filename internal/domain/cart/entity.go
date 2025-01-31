@@ -173,10 +173,11 @@ func (c *Cart) checkCanChangeStatus(newStatus StatusEnum) error {
 
 func (c *Cart) String() string {
 	return fmt.Sprintf(
-		"Cart{CreatedAt: %s, Id: %s, CustomerId: %d, Status: %s}",
+		"Cart{CreatedAt: %s, Id: %s, CustomerId: %d, Status: %s, Items: %s}",
 		c.CreatedAt,
 		c.Id,
 		c.Customer.Id,
 		c.Status,
+		c.Items,
 	)
 }
